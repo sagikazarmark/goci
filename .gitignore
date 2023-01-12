@@ -1,0 +1,6 @@
+/.direnv/
+/.task/
+/bin/
+/build/
+/tmp/
+/vendor/
