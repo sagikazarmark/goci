@@ -45,7 +45,7 @@ type Option interface {
 // BaseImageRepository specifies which image repository to use as a base image for Go operations.
 // The value should follow the [OCI content addressable format] (without a tag or digest).
 //
-// BaseImageRepository is ignored when a full image reference is provided using BaseImage.
+// BaseImageRepository is ignored when a full image reference is provided using [BaseImage].
 //
 // [OCI content addressable format]: https://github.com/opencontainers/.github/blob/master/docs/docs/introduction/digests.md#unique-resource-identifiers
 func BaseImageRepository(v string) Option {
@@ -60,7 +60,7 @@ func (v baseImageRepository) applyBase(o *baseOptions) {
 
 // BaseImageTag specifies which tag from an image repository to use as a base image for Go operations.
 //
-// BaseImageTag is ignored when a full image reference is provided using BaseImage.
+// BaseImageTag is ignored when a full image reference is provided using [BaseImage].
 func BaseImageTag(v string) Option {
 	return baseImageTag(v)
 }
@@ -71,13 +71,15 @@ func (v baseImageTag) applyBase(o *baseOptions) {
 	o.BaseImageTag = string(v)
 }
 
-// Version is an alias to BaseImageTag to provide a more user-friendly alternative.
+// Version is an alias to [BaseImageTag] to provide a more user-friendly alternative.
 func Version(v string) Option {
 	return BaseImageTag(v)
 }
 
 // BaseImage specifies which image to use as a base image for Go operations.
 // The value should follow the [OCI content addressable format].
+//
+// [OCI content addressable format]: https://github.com/opencontainers/.github/blob/master/docs/docs/introduction/digests.md#unique-resource-identifiers
 func BaseImage(v string) Option {
 	return baseImage(v)
 }
@@ -119,6 +121,9 @@ func (v projectRoot) applyBase(o *baseOptions) {
 	o.ProjectRoot = string(v)
 }
 
+// Base returns a basic Go container with the current project mounted to /src.
+// Base also configures some common Go options, like mounting cache directories.
+// It can be used as a base container for more specific Go actions (test, lint, etc).
 func Base(client *dagger.Client, opts ...Option) *dagger.Container {
 	var options baseOptions
 
