@@ -39,6 +39,11 @@ func (o baseOptions) CgoValue() string {
 
 // Option configures common parameters.
 type Option interface {
+	BaseOption
+}
+
+// BaseOption configures base parameters.
+type BaseOption interface {
 	applyBase(o *baseOptions)
 }
 
@@ -48,7 +53,7 @@ type Option interface {
 // BaseImageRepository is ignored when a full image reference is provided using [BaseImage].
 //
 // [OCI content addressable format]: https://github.com/opencontainers/.github/blob/master/docs/docs/introduction/digests.md#unique-resource-identifiers
-func BaseImageRepository(v string) Option {
+func BaseImageRepository(v string) BaseOption {
 	return baseImageRepository(v)
 }
 
@@ -61,7 +66,7 @@ func (v baseImageRepository) applyBase(o *baseOptions) {
 // BaseImageTag specifies which tag from an image repository to use as a base image for Go operations.
 //
 // BaseImageTag is ignored when a full image reference is provided using [BaseImage].
-func BaseImageTag(v string) Option {
+func BaseImageTag(v string) BaseOption {
 	return baseImageTag(v)
 }
 
@@ -72,7 +77,7 @@ func (v baseImageTag) applyBase(o *baseOptions) {
 }
 
 // Version is an alias to [BaseImageTag] to provide a more user-friendly alternative.
-func Version(v string) Option {
+func Version(v string) BaseOption {
 	return BaseImageTag(v)
 }
 
@@ -80,7 +85,7 @@ func Version(v string) Option {
 // The value should follow the [OCI content addressable format].
 //
 // [OCI content addressable format]: https://github.com/opencontainers/.github/blob/master/docs/docs/introduction/digests.md#unique-resource-identifiers
-func BaseImage(v string) Option {
+func BaseImage(v string) BaseOption {
 	return baseImage(v)
 }
 
@@ -93,14 +98,14 @@ func (v baseImage) applyBase(o *baseOptions) {
 // EnableCgo sets CGO_ENABLED to 1.
 //
 // If not set, Go will fall back to the default value.
-func EnableCgo() Option {
+func EnableCgo() BaseOption {
 	return cgo(true)
 }
 
 // DisableCgo sets CGO_ENABLED to 0.
 //
 // If not set, Go will fall back to the default value.
-func DisableCgo() Option {
+func DisableCgo() BaseOption {
 	return cgo(false)
 }
 
@@ -111,7 +116,7 @@ func (v cgo) applyBase(o *baseOptions) {
 }
 
 // ProjectRoot sets the project root to an alternate path (relative or absolute).
-func ProjectRoot(v string) Option {
+func ProjectRoot(v string) BaseOption {
 	return projectRoot(v)
 }
 
@@ -124,7 +129,7 @@ func (v projectRoot) applyBase(o *baseOptions) {
 // Base returns a basic Go container with the current project mounted to /src.
 // Base also configures some common Go options, like mounting cache directories.
 // It can be used as a base container for more specific Go actions (test, lint, etc).
-func Base(client *dagger.Client, opts ...Option) *dagger.Container {
+func Base(client *dagger.Client, opts ...BaseOption) *dagger.Container {
 	var options baseOptions
 
 	for _, opt := range opts {
