@@ -6,6 +6,7 @@ import (
 
 	"dagger.io/dagger"
 	"github.com/sagikazarmark/go-option"
+	"github.com/sagikazarmark/goci/lib"
 )
 
 const (
@@ -150,7 +151,7 @@ func (v projectRoot) applyTest(o *testOptions) {
 // Base returns a basic Go container with the current project mounted to /src.
 // Base also configures some common Go options, like mounting cache directories.
 // It can be used as a base container for more specific Go actions (test, lint, etc).
-func Base(client *dagger.Client, opts ...BaseOption) *dagger.Container {
+func Base(client lib.Client, opts ...BaseOption) *dagger.Container {
 	var options baseOptions
 
 	for _, opt := range opts {
@@ -160,7 +161,7 @@ func Base(client *dagger.Client, opts ...BaseOption) *dagger.Container {
 	return base(client, options)
 }
 
-func base(client *dagger.Client, options baseOptions) *dagger.Container {
+func base(client lib.Client, options baseOptions) *dagger.Container {
 	projectRoot := "."
 	if options.ProjectRoot != "" {
 		projectRoot = options.ProjectRoot
