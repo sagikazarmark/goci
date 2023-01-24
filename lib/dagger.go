@@ -18,6 +18,11 @@ type BaseClient struct {
 	client *dagger.Client
 }
 
+// NewBaseClient returns a new [BaseClient].
+func NewBaseClient(client *dagger.Client) BaseClient {
+	return BaseClient{client}
+}
+
 func (c BaseClient) Container(opts ...dagger.ContainerOpts) *dagger.Container {
 	return c.client.Container(opts...)
 }
