@@ -3,6 +3,7 @@ package golang
 import (
 	"dagger.io/dagger"
 	"github.com/sagikazarmark/go-option"
+	"github.com/sagikazarmark/goci/lib"
 )
 
 // TestOption configures test parameters.
@@ -37,7 +38,7 @@ type testOptions struct {
 	RaceDetectorEnabled bool
 }
 
-func Test(client *dagger.Client, opts ...TestOption) *dagger.Container {
+func Test(client lib.Client, opts ...TestOption) *dagger.Container {
 	var options testOptions
 
 	for _, opt := range opts {
