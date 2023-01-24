@@ -107,7 +107,7 @@ func TestBase_Cgo(t *testing.T) {
 
 	testCases := []struct {
 		name     string
-		opts     []golang.Option
+		opts     []golang.BaseOption
 		expected string
 	}{
 		{
@@ -116,12 +116,12 @@ func TestBase_Cgo(t *testing.T) {
 		},
 		{
 			name:     "enabled",
-			opts:     []golang.Option{golang.EnableCgo()},
+			opts:     []golang.BaseOption{golang.EnableCgo()},
 			expected: "1",
 		},
 		{
 			name:     "disabled",
-			opts:     []golang.Option{golang.DisableCgo()},
+			opts:     []golang.BaseOption{golang.DisableCgo()},
 			expected: "0",
 		},
 	}

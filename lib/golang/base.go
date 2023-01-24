@@ -39,6 +39,12 @@ func (o baseOptions) CgoValue() string {
 
 // Option configures common parameters.
 type Option interface {
+	BaseOption
+	TestOption
+}
+
+// BaseOption configures base parameters.
+type BaseOption interface {
 	applyBase(o *baseOptions)
 }
 
@@ -58,6 +64,10 @@ func (v baseImageRepository) applyBase(o *baseOptions) {
 	o.BaseImageRepository = string(v)
 }
 
+func (v baseImageRepository) applyTest(o *testOptions) {
+	v.applyBase(&o.baseOptions)
+}
+
 // BaseImageTag specifies which tag from an image repository to use as a base image for Go operations.
 //
 // BaseImageTag is ignored when a full image reference is provided using [BaseImage].
@@ -69,6 +79,10 @@ type baseImageTag string
 
 func (v baseImageTag) applyBase(o *baseOptions) {
 	o.BaseImageTag = string(v)
+}
+
+func (v baseImageTag) applyTest(o *testOptions) {
+	v.applyBase(&o.baseOptions)
 }
 
 // Version is an alias to [BaseImageTag] to provide a more user-friendly alternative.
@@ -88,6 +102,10 @@ type baseImage string
 
 func (v baseImage) applyBase(o *baseOptions) {
 	o.BaseImage = string(v)
+}
+
+func (v baseImage) applyTest(o *testOptions) {
+	v.applyBase(&o.baseOptions)
 }
 
 // EnableCgo sets CGO_ENABLED to 1.
@@ -110,6 +128,10 @@ func (v cgo) applyBase(o *baseOptions) {
 	o.CgoEnabled = option.Some(bool(v))
 }
 
+func (v cgo) applyTest(o *testOptions) {
+	v.applyBase(&o.baseOptions)
+}
+
 // ProjectRoot sets the project root to an alternate path (relative or absolute).
 func ProjectRoot(v string) Option {
 	return projectRoot(v)
@@ -121,10 +143,14 @@ func (v projectRoot) applyBase(o *baseOptions) {
 	o.ProjectRoot = string(v)
 }
 
+func (v projectRoot) applyTest(o *testOptions) {
+	v.applyBase(&o.baseOptions)
+}
+
 // Base returns a basic Go container with the current project mounted to /src.
 // Base also configures some common Go options, like mounting cache directories.
 // It can be used as a base container for more specific Go actions (test, lint, etc).
-func Base(client *dagger.Client, opts ...Option) *dagger.Container {
+func Base(client *dagger.Client, opts ...BaseOption) *dagger.Container {
 	var options baseOptions
 
 	for _, opt := range opts {
