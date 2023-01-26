@@ -15,7 +15,6 @@
 - [x] GolangCI Lint
 - [x] CI detection
 - [ ] CodeCov upload
-- [ ] Multi-platform support
 - [ ] Build pipelines
   - [ ] Build matrix
   - [ ] Pipelines
