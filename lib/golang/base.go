@@ -42,6 +42,7 @@ func (o baseOptions) CgoValue() string {
 type Option interface {
 	BaseOption
 	TestOption
+	LintOption
 }
 
 // BaseOption configures base parameters.
@@ -69,6 +70,10 @@ func (v baseImageRepository) applyTest(o *testOptions) {
 	v.applyBase(&o.baseOptions)
 }
 
+func (v baseImageRepository) applyLint(o *lintOptions) {
+	v.applyBase(&o.baseOptions)
+}
+
 // BaseImageTag specifies which tag from an image repository to use as a base image for Go operations.
 //
 // BaseImageTag is ignored when a full image reference is provided using [BaseImage].
@@ -83,6 +88,10 @@ func (v baseImageTag) applyBase(o *baseOptions) {
 }
 
 func (v baseImageTag) applyTest(o *testOptions) {
+	v.applyBase(&o.baseOptions)
+}
+
+func (v baseImageTag) applyLint(o *lintOptions) {
 	v.applyBase(&o.baseOptions)
 }
 
@@ -106,6 +115,10 @@ func (v baseImage) applyBase(o *baseOptions) {
 }
 
 func (v baseImage) applyTest(o *testOptions) {
+	v.applyBase(&o.baseOptions)
+}
+
+func (v baseImage) applyLint(o *lintOptions) {
 	v.applyBase(&o.baseOptions)
 }
 
@@ -133,6 +146,10 @@ func (v cgo) applyTest(o *testOptions) {
 	v.applyBase(&o.baseOptions)
 }
 
+func (v cgo) applyLint(o *lintOptions) {
+	v.applyBase(&o.baseOptions)
+}
+
 // ProjectRoot sets the project root to an alternate path (relative or absolute).
 func ProjectRoot(v string) Option {
 	return projectRoot(v)
@@ -145,6 +162,10 @@ func (v projectRoot) applyBase(o *baseOptions) {
 }
 
 func (v projectRoot) applyTest(o *testOptions) {
+	v.applyBase(&o.baseOptions)
+}
+
+func (v projectRoot) applyLint(o *lintOptions) {
 	v.applyBase(&o.baseOptions)
 }
 
