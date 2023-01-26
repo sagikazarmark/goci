@@ -9,6 +9,54 @@
 
 **⚠️ This tool is still under heavy development! Things may change. ⚠️**
 
+## Features
+
+- [x] Go test
+- [x] GolangCI Lint
+- [x] CI detection
+- [ ] CodeCov upload
+- [ ] Multi-platform support
+- [ ] Build pipelines
+  - [ ] Build matrix
+  - [ ] Pipelines
+  - [ ] Step dependencies
+
+## Goals
+
+- Create a high-level interface for building a CI based on Dagger
+- Hide low-level (Dagger) details as much as possible
+
+## Usage
+
+Install the library:
+
+```shell
+go get github.com/sagikazarmark/goci
+```
+
+Create CLI tool:
+
+```go
+package main
+
+func main() {
+	client, err := dagger.Connect(ctx)
+	if err != nil {
+		return panic(err)
+	}
+	defer client.Close()
+
+	c := golang.Test(client)
+
+	output, err := container.Stdout(ctx)
+	if err != nil {
+		return panic(err)
+	}
+
+	fmt.Print(output)
+}
+```
+
 
 ## License
 
