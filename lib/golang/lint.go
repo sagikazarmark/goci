@@ -16,12 +16,6 @@ type LintOption interface {
 	applyLint(o *lintOptions)
 }
 
-type lintOptionFunc func(o *lintOptions)
-
-func (f lintOptionFunc) applyLint(o *lintOptions) {
-	f(o)
-}
-
 // SourceImageRepository specifies which image repository to use as a source for GolangCI Lint.
 // The value should follow the [OCI content addressable format] (without a tag or digest).
 //
