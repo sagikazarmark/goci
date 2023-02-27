@@ -5,7 +5,7 @@ go 1.19
 require (
 	dagger.io/dagger v0.4.4
 	github.com/sagikazarmark/go-option v0.2.0
-	github.com/stretchr/testify v1.8.1
+	github.com/stretchr/testify v1.8.2
 )
 
 require (
